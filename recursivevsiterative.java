@@ -1,3 +1,9 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class recursivevsiterative {
 
 
@@ -27,22 +33,33 @@ public class recursivevsiterative {
         }
     }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     double base = 3.14159265359;
     int exponent = 1000;
     long iterativeStartTime;
     long iterativeEndTime;
     long recursiveStartTime;
     long recursiveEndTime;
-
-    for(int i=0; i<exponent;i++){
+    BufferedWriter outputfile = new BufferedWriter(new FileWriter("data.csv"));
+    List<String> data = new ArrayList<String>();
+    
+    System.out.println("beginning test");
+    for(int i=0; i<= exponent;i++){
         iterativeStartTime = System.nanoTime();
         IterativeCall(base, i);
         iterativeEndTime = System.nanoTime();
         recursiveStartTime = System.nanoTime();
         RecursiveCall(base, i);
         recursiveEndTime = System.nanoTime();
-    
+        long iterativeNet=iterativeEndTime-iterativeStartTime;
+        long recursiveNet = recursiveEndTime-recursiveStartTime;
+        data.add(new String(i + "," + iterativeNet +"," + recursiveNet));
     }
+    System.out.println("finished test");
+    for(String d:data){
+        outputfile.write(d);
+        outputfile.newLine();
+    }
+    outputfile.close();
   }
 }
